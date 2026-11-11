@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2a4b8d">
+<title>Candidaturas rápidas</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b1f24;--mut:#5d6672;--bd:#dde1e6;--ac:#2a4b8d;--acx:#fff;--ok:#1a7f4b;--wa:#a86a00;--ko:#b3261e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#15181c;--card:#1f2328;--tx:#e8eaed;--mut:#9aa3ad;--bd:#343a41;--ac:#7ea6f0;--acx:#10151c;--ok:#4cc38a;--wa:#e0a64a;--ko:#f2766e;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px}
+main{max-width:640px;margin:0 auto}
+h1{font-size:1.4rem;margin:4px 0}h2{font-size:1.05rem;margin:0 0 10px}
+.sub,.note{color:var(--mut)}.sub{margin:0 0 14px}.note{font-size:.85rem;margin-top:4px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px}
+label{display:block;font-size:.85rem;color:var(--mut);margin:8px 0 4px}
+label.ck{display:flex;gap:8px;align-items:center;color:var(--tx);font-size:1rem;margin:6px 0}
+label.ck input{width:auto}
+input,textarea,select{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px}
+textarea{min-height:100px;resize:vertical}
+button,.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:11px 14px;background:var(--ac);color:var(--acx);cursor:pointer;text-decoration:none;display:inline-block}
+button.sec,.btn.sec{background:transparent;color:var(--ac);border:1px solid var(--bd)}
+.btn.sm{padding:7px 11px;font-size:.9rem}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.flag{padding:7px 10px;border-radius:8px;margin:6px 0;font-size:.92rem;border-left:4px solid var(--bd);background:var(--bg)}
+.flag.ok{border-color:var(--ok)}.flag.wa{border-color:var(--wa)}.flag.ko{border-color:var(--ko)}
+.verdict{font-weight:700;margin-bottom:6px}
+.item,.portal{border-top:1px solid var(--bd);padding:10px 0}.item:first-child,.portal:first-child{border-top:0}
+.tag{color:var(--wa);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:transparent;color:var(--tx);border:1px solid var(--bd);padding:8px 12px;border-radius:20px;font-weight:500}
+.chip.on{background:var(--ac);color:var(--acx);border-color:var(--ac)}
+summary{font-weight:700;cursor:pointer}
+.hide{display:none}
+</style>
+</head>
+<body>
+<main>
+<h1>Candidaturas rápidas</h1>
+<p class="sub">Pega la oferta, mira si encaja contigo y copia la carta. Tú revisas y envías.</p>
+
+<details class="card" id="perf">
+<summary>Mi perfil (se guarda solo en este móvil)</summary>
+<label for="pn">Nombre</label><input id="pn" autocomplete="given-name">
+<label for="pc">Ciudad donde buscas</label><input id="pc" placeholder="Tu ciudad">
+<label for="pe">Experiencia de cara al público</label><textarea id="pe" placeholder="Frase que irá en la carta"></textarea>
+<label for="ps">Experiencia de socorrista o monitor (opcional)</label><textarea id="ps"></textarea>
+<label for="pt">Experiencia técnica (opcional)</label><textarea id="pt"></textarea>
+<label for="pi">Idiomas (frase para la carta, opcional)</label><input id="pi">
+<label for="pd">Disponibilidad (frase para la carta)</label><textarea id="pd"></textarea>
+<label class="ck"><input type="checkbox" id="cm"> Puedo por las mañanas</label>
+<label class="ck"><input type="checkbox" id="ct"> Puedo por las tardes</label>
+<label class="ck"><input type="checkbox" id="cf"> Puedo fines de semana y festivos</label>
+<label class="ck"><input type="checkbox" id="cq"> Tengo carnet de conducir</label>
+<label for="pj">Copia de seguridad o importar perfil</label><textarea id="pj" placeholder="Pega aquí un perfil para importarlo"></textarea>
+<div class="row"><button class="sec" id="pcp" type="button">Copiar mi perfil</button><button class="sec" id="pim" type="button">Importar</button></div>
+<div id="pmsg" class="note" role="status"></div>
+</details>
+
+<section class="card">
+<h2>1. Oferta</h2>
+<label for="of">Texto de la oferta</label><textarea id="of" placeholder="Pega aquí la descripción completa"></textarea>
+<div class="note">Truco: en la página de la oferta, mantén pulsado, elige Seleccionar todo, copia y pega aquí.</div>
+<label for="emp">Empresa</label><input id="emp">
+<label for="pue">Puesto</label><input id="pue">
+<label for="url">Enlace de la oferta (opcional, solo se guarda)</label><input id="url" type="url" inputmode="url" placeholder="https://...">
+<div class="row"><button id="go">Analizar y preparar carta</button><button class="sec" id="clr">Limpiar</button></div>
+</section>
+
+<section class="card hide" id="res">
+<h2>2. Encaje con tu perfil</h2>
+<div id="ver" class="verdict"></div><div id="flags"></div>
+<h2 style="margin-top:14px">3. Carta (puedes editarla)</h2>
+<textarea id="let" style="min-height:230px"></textarea>
+<div class="row"><button id="cp">Copiar carta</button><button class="sec" id="cf2">Copiar seguimiento</button><button class="sec" id="sv">Guardar candidatura</button></div>
+<div id="msg" class="note" role="status"></div>
+</section>
+
+<section class="card">
+<h2>Buscar ofertas</h2>
+<label>Qué buscar (marca todos los que quieras)</label>
+<div id="kws" class="chips"></div>
+<div id="portals" style="margin-top:12px"></div>
+</section>
+
+<section class="card"><h2>Mis candidaturas</h2><div id="list"></div></section>
+</main>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},enc=encodeURIComponent;
+function norm(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}
+/* ---------- perfil ---------- */
+var KEYS=["n","c","e","s","t","i","d"],CK=["m","ta","f","cc"];
+var ID={n:"pn",c:"pc",e:"pe",s:"ps",t:"pt",i:"pi",d:"pd",m:"cm",ta:"ct",f:"cf",cc:"cq"};
+function prof(){var p={};KEYS.forEach(function(k){p[k]=$(ID[k]).value.trim()});CK.forEach(function(k){p[k]=$(ID[k]).checked});return p}
+function setProf(p){p=p||{};KEYS.forEach(function(k){$(ID[k]).value=typeof p[k]==="string"?p[k]:""});CK.forEach(function(k){$(ID[k]).checked=p[k]===true})}
+function saveProf(){try{localStorage.setItem("perfil",JSON.stringify(prof()))}catch(e){}}
+function pmsg(t){$("pmsg").textContent=t;setTimeout(function(){$("pmsg").textContent=""},3500)}
+try{var raw0=localStorage.getItem("perfil");if(raw0)setProf(JSON.parse(raw0))}catch(e){}
+$("perf").open=!$("pn").value;
+Object.keys(ID).forEach(function(k){var el=$(ID[k]);function h(){saveProf();links()}el.addEventListener("input",h);el.addEventListener("change",h)});
+/* ---------- carta y encaje ---------- */
+var LEARN="No tengo experiencia previa en este puesto, pero soy responsable, trabajo bien en equipo, me adapto rápido y tengo muchas ganas de aprender.";
+var T={
+tienda:{why:"Me gusta el trabajo dinámico de tienda, tanto atender a los clientes como mantener los productos ordenados y repuestos.",k:"e",learn:LEARN,eng:true},
+hosteleria:{why:"Me gusta el ritmo de la hostelería y el trato directo con el cliente.",k:"e",learn:LEARN,eng:true},
+socorrista:{why:"Me interesa porque combina vigilancia, atención a las personas y trabajo en equipo.",k:"s",learn:"Soy responsable y mantengo la calma para resolver incidencias.",eng:true},
+tecnico:{why:"Quiero seguir aprendiendo en un entorno profesional del sector.",k:"t",learn:"Soy responsable, trabajo bien en equipo y tengo muchas ganas de seguir aprendiendo.",eng:false},
+general:{why:"Me gusta el trato con la gente y trabajar en equipo.",k:"e",learn:"Soy responsable, me adapto rápido y tengo muchas ganas de aprender.",eng:true}};
+function kind(s){
+if(/socorrista|monitor|piscina|animador/.test(s))return"socorrista";
+if(/instalador|telecomunicaciones|cctv|alarma|electricista|tecnico/.test(s))return"tecnico";
+if(/camarero|cocina|restaurante|hosteleria|barista|burger|runner|cafeteria/.test(s))return"hosteleria";
+if(/reponedor|cajer|dependiente|venta|vendedor|tienda|auxiliar/.test(s))return"tienda";
+return"general"}
+function rules(s,p){
+var f=[];function add(c,t){f.push({c:c,t:t})}
+var city=norm(p.c);
+if(/parcial|part.?time|media jornada|\b(15|16|20|25) ?h|tardes/.test(s))add("ok","Jornada parcial.");
+else if(/jornada completa|40 ?h|full.?time/.test(s))add("wa","Parece jornada completa. Comprueba si te encaja.");
+if(city){if(s.indexOf(city)>-1)add("ok","Aparece "+p.c+" en la oferta.");else add("wa","No aparece "+p.c+". Revisa la ubicación antes de enviar.")}
+if(/fin(es)? de semana|festivos|sabados|domingos|turnos rotativos|rotativos/.test(s))add(p.f?"ok":"wa",p.f?"Pide fines de semana o festivos: tienes disponibilidad.":"Pide fines de semana o festivos y no los tienes marcados.");
+if(/solo mananas|mananas|turno de manana|horario de manana/.test(s)&&!/tardes/.test(s))add(p.m?"ok":"wa",p.m?"Horario de mañanas: puedes.":"Parece horario de mañanas y no las tienes marcadas.");
+if(/(\d+) ?(anos) de experiencia|experiencia (previa|minima|demostrable|imprescindible|acreditada)|imprescindible experiencia/.test(s))add("wa","Pide experiencia previa. Cuéntale con claridad lo que sí has hecho.");
+if(/carnet|permiso de conducir|vehiculo propio|coche propio/.test(s))add(p.cc?"ok":"ko",p.cc?"Pide carnet: lo tienes.":"Pide carnet o vehículo y no lo tienes marcado.");
+if(/ingles|english|idiomas|turistas|internacional/.test(s))add(p.i?"ok":"wa",p.i?"Valoran idiomas: lo tienes en tu perfil.":"Valoran idiomas y no tienes ninguno en tu perfil.");
+if(/navidad|campana|temporal/.test(s))add("wa","Contrato temporal o de campaña. Mira la duración antes de decidir.");
+if(/grado superior|licenciatura|titulacion universitaria/.test(s))add("wa","Pide una titulación. Mira si es obligatoria.");
+return f}
+function letter(emp,pue,s,k,p){
+var t=T[k],eng=p.i&&(t.eng||/ingles|english|idiomas|turistas/.test(s)),nav=/navidad/.test(s);
+return["Hola, me llamo "+(p.n||"[NOMBRE]")+" y me interesa el puesto de "+(pue||"[PUESTO]")+" en "+(emp||"[EMPRESA]")+".",t.why,p[t.k]||p.e,eng?p.i:"",p.d||"[DISPONIBILIDAD]",nav?"Eso viene muy bien en una campaña de Navidad.":"",t.learn,"Gracias por tu tiempo."].filter(Boolean).join(" ")}
+function msg(t){$("msg").textContent=t;setTimeout(function(){$("msg").textContent=""},3000)}
+function copy(txt,ok,cb){
+function done(){if(cb)cb();else msg(ok)}
+function fb(){var a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");done()}catch(e){msg("No se pudo copiar, selecciona el texto a mano.")}a.remove()}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb)}else fb()}
+$("go").onclick=function(){
+var emp=$("emp").value.trim(),pue=$("pue").value.trim(),raw=$("of").value,p=prof();
+if(!raw.trim()&&!pue){$("res").classList.remove("hide");msg("Pega la oferta o escribe el puesto.");return}
+var s=norm(raw+" "+pue),k=kind(norm(pue)||s),fl=rules(s,p);
+var ko=fl.filter(function(x){return x.c==="ko"}).length,wa=fl.filter(function(x){return x.c==="wa"}).length;
+$("ver").textContent=ko?"Poco encaje: revisa los avisos rojos":(wa>=3?"Encaje dudoso: revisa los avisos":(wa?"Buen encaje, con algo que revisar":"Muy buen encaje"));
+var box=$("flags");box.textContent="";
+fl.forEach(function(x){var d=document.createElement("div");d.className="flag "+x.c;d.textContent=x.t;box.appendChild(d)});
+$("let").value=letter(emp,pue,s,k,p);
+$("res").classList.remove("hide");$("res").scrollIntoView({behavior:"smooth"})};
+$("clr").onclick=function(){["emp","pue","of","let","url"].forEach(function(i){$(i).value=""});$("res").classList.add("hide")};
+$("cp").onclick=function(){copy($("let").value,"Carta copiada.")};
+$("cf2").onclick=function(){var p=prof();copy("Hola, soy "+(p.n||"[NOMBRE]")+". Hace unos días envié mi candidatura para "+($("pue").value.trim()||"[PUESTO]")+" en "+($("emp").value.trim()||"[EMPRESA]")+". Sigo muy interesado y quedo atento por si necesitan algo más. Gracias.","Mensaje de seguimiento copiado.")};
+$("pcp").onclick=function(){copy(JSON.stringify(prof()),"",function(){pmsg("Perfil copiado. Guárdalo en tus notas.")})};
+$("pim").onclick=function(){try{var o=JSON.parse($("pj").value);if(!o||typeof o!=="object")throw 0;setProf(o);saveProf();links();$("pj").value="";pmsg("Perfil importado.")}catch(e){pmsg("Ese texto no es un perfil válido.")}};
+/* ---------- búsqueda ---------- */
+var KW=["reponedor","cajero","dependiente","ayudante de venta","camarero","atención al cliente","socorrista","monitor","azafato","control de accesos","técnico instalador telecomunicaciones"];
+var sel=["reponedor","cajero"];
+try{var rs=localStorage.getItem("kws");if(rs){var pj=JSON.parse(rs);if(Array.isArray(pj))sel=pj}}catch(e){}
+function ia(u,pkg){return"intent://"+u.replace("https://","")+"#Intent;scheme=https;package="+pkg+";S.browser_fallback_url="+enc(u)+";end"}
+var P=[
+{n:"Indeed",pkg:"com.indeed.android.jobsearch",url:function(k,c){return"https://es.indeed.com/jobs?q="+enc(k)+"&l="+enc(c)},all:function(k,c){return"https://es.indeed.com/jobs?q="+enc(k.map(function(x){return'"'+x+'"'}).join(" OR "))+"&l="+enc(c)}},
+{n:"InfoJobs",pkg:"net.infojobs.mobile.android",url:function(k,c){return"https://www.infojobs.net/jobsearch/search-results/list.xhtml?keyword="+enc(k+" "+c)}},
+{n:"LinkedIn",pkg:"com.linkedin.android",url:function(k,c){return"https://www.linkedin.com/jobs/search/?keywords="+enc(k)+"&location="+enc(c)},all:function(k,c){return"https://www.linkedin.com/jobs/search/?keywords="+enc(k.join(" OR "))+"&location="+enc(c)}},
+{n:"Jooble",url:function(k,c){return"https://es.jooble.org/SearchResult?ukw="+enc(k)+"&rgns="+enc(c)}},
+{n:"Adecco",note:"Adecco no deja enlazar su buscador: se abre una búsqueda de Google limitada a adecco.es.",url:function(k,c){return"https://www.google.com/search?q="+enc("site:adecco.es "+k+" "+c)}},
+{n:"Job Today",home:"https://jobtoday.com",note:"Job Today funciona sobre todo desde su app: copia la búsqueda del recuadro de abajo y pégala allí."}];
+function chips(){
+var box=$("kws");box.textContent="";
+KW.forEach(function(k){
+var on=sel.indexOf(k)>-1,b=document.createElement("button");b.type="button";b.className="chip"+(on?" on":"");b.textContent=k;b.setAttribute("aria-pressed",on?"true":"false");
+b.onclick=function(){var i=sel.indexOf(k);if(i>-1)sel.splice(i,1);else sel.push(k);try{localStorage.setItem("kws",JSON.stringify(sel))}catch(e){}chips();links()};
+box.appendChild(b)})}
+function lk(txt,href,ext){var x=document.createElement("a");x.className="btn sec sm";x.textContent=txt;x.href=href;if(ext){x.target="_blank";x.rel="noopener"}return x}
+function el(tag,cls,txt){var x=document.createElement(tag);if(cls)x.className=cls;if(txt)x.textContent=txt;return x}
+function links(){
+var box=$("portals");box.textContent="";var c=$("pc").value.trim();
+if(!c){box.appendChild(el("div","sub","Escribe tu ciudad en Mi perfil para buscar ofertas."));return}
+if(!sel.length){box.appendChild(el("div","sub","Marca al menos un tipo de empleo."));return}
+P.forEach(function(p){
+var d=el("div","portal"),r=el("div","row");d.appendChild(el("strong","",p.n));r.style.marginTop="6px";
+if(p.home)r.appendChild(lk("Abrir "+p.n,p.home,true));
+else{if(p.all&&sel.length>1)r.appendChild(lk("Todos juntos",p.all(sel,c),true));sel.forEach(function(k){r.appendChild(lk(k,p.url(k,c),true))})}
+d.appendChild(r);
+if(p.pkg){var r2=el("div","row");r2.style.marginTop="6px";r2.appendChild(el("span","note","Abrir en la app:"));sel.forEach(function(k){r2.appendChild(lk(k,ia(p.url(k,c),p.pkg),false))});d.appendChild(r2)}
+if(p.note)d.appendChild(el("div","note",p.note));
+box.appendChild(d)});
+var b=el("div","portal");b.appendChild(el("strong","","Buscar dentro de cualquier app"));
+var br=el("div","row"),cn=el("div","note");cn.setAttribute("role","status");br.style.marginTop="6px";
+sel.forEach(function(k){var x=el("button","btn sec sm","Copiar: "+k+" "+c);x.type="button";x.onclick=function(){copy(k+" "+c,"",function(){cn.textContent="Copiado. Pégalo en el buscador de la app."})};br.appendChild(x)});
+b.appendChild(br);b.appendChild(cn);box.appendChild(b)}
+/* ---------- candidaturas ---------- */
+var apps=[],ST=["Enviada","Entrevista","Sin respuesta","Descartada","Contratado"];
+function load(){try{var r=localStorage.getItem("apps");apps=r?JSON.parse(r):[]}catch(e){apps=[]}if(!Array.isArray(apps))apps=[]}
+function save(){try{localStorage.setItem("apps",JSON.stringify(apps))}catch(e){}}
+function safeUrl(u){u=(u||"").trim();var l=u.toLowerCase();return(l.indexOf("http://")===0||l.indexOf("https://")===0)?u:""}
+function render(){
+var box=$("list");box.textContent="";
+if(!apps.length){box.appendChild(el("div","sub","Aún no has guardado ninguna. Guarda cada candidatura que envíes."));return}
+apps.forEach(function(a,i){
+var d=el("div","item");d.appendChild(el("strong","",(a.pue||"Puesto")+" · "+(a.emp||"Empresa")));
+if(safeUrl(a.url)){var ln=el("a","note"," · ver oferta");ln.href=safeUrl(a.url);ln.target="_blank";ln.rel="noopener";d.appendChild(ln)}
+var days=Math.floor((Date.now()-new Date(a.date).getTime())/864e5),sm=el("div");
+sm.appendChild(el("small","note","Enviada hace "+days+" día"+(days===1?"":"s")));
+if(a.st==="Enviada"&&days>=6)sm.appendChild(el("span","tag"," · toca seguimiento"));
+d.appendChild(sm);
+var r=el("div","row"),s=document.createElement("select");s.style.width="auto";
+ST.forEach(function(x){var o=document.createElement("option");o.textContent=x;if(x===a.st)o.selected=true;s.appendChild(o)});
+s.onchange=function(){apps[i].st=s.value;save();render()};
+var del=el("button","sec","Borrar");del.onclick=function(){apps.splice(i,1);save();render()};
+r.appendChild(s);r.appendChild(del);d.appendChild(r);box.appendChild(d)})}
+$("sv").onclick=function(){
+apps.unshift({emp:$("emp").value.trim(),pue:$("pue").value.trim(),url:safeUrl($("url").value),date:new Date().toISOString().slice(0,10),st:"Enviada"});
+save();render();msg("Candidatura guardada.")};
+load();render();chips();links();
+})();
+</script>
+</body>
+</html>
